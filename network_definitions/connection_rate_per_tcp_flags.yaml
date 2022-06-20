@@ -1,0 +1,36 @@
+#flp_confgen
+description:
+  This metric observes network connections rate per TCPFlags
+details:
+  Counts the number of connections per tcp flags
+usage:
+  Evaluate difference in connections rate of different TCP Flags. Can be used, for example, to identify syn-attacks.
+labels:
+  - rate
+  - TCPFlags
+extract:
+  type: aggregates
+  aggregates:
+    - name: TCPFlags_count
+      by:
+        - TCPFlags
+      operation: count
+encode:
+  type: prom
+  prom:
+    metrics:
+      - name: connections_per_tcp_flags
+        type: counter
+        filter: { key: name, value: TCPFlags_count }
+        valueKey: recent_count
+        labels:
+          - by
+          - aggregate
+visualization:
+  type: grafana
+  grafana:
+    - expr: 'topk(10,rate(flp_connections_per_tcp_flags[1m]))'
+      type: graphPanel
+      dashboard: details
+      title:
+        Connections rate per TCPFlags

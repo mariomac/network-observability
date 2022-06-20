@@ -1,0 +1,42 @@
+#flp_confgen
+description:
+  This metric observes network connections rate per source subnet
+details:
+  Counts the number of connections per subnet with network prefix length /16
+usage:
+  Evaluate network connections per subnet
+labels:
+  - rate
+  - subnet
+transform:
+  rules:
+    - input: srcIP
+      output: srcSubnet
+      type: add_subnet
+      parameters: /16
+extract:
+  type: aggregates
+  aggregates:
+    - name: src_connection_count
+      by:
+        - srcSubnet
+      operation: count
+encode:
+  type: prom
+  prom:
+    metrics:
+      - name: connections_per_source_subnet
+        type: counter
+        filter: {key: name, value: src_connection_count}
+        valueKey: recent_count
+        labels:
+          - by
+          - aggregate
+visualization:
+  type: grafana
+  grafana:
+    - expr: 'topk(10,rate(flp_connections_per_source_subnet[1m]))'
+      type: graphPanel
+      dashboard: details
+      title:
+        Connections rate per sourceIP /16 subnets
