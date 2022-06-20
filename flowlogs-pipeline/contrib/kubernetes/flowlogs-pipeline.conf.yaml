@@ -1,0 +1,337 @@
+# This file was generated automatically by flowlogs-pipeline confgenerator
+log-level: error
+parameters:
+- ingest:
+    collector:
+      hostname: 0.0.0.0
+      port: 2055
+      portLegacy: 2056
+    type: collector
+  name: ingest_collector
+- name: transform_generic
+  transform:
+    generic:
+      policy: replace_keys
+      rules:
+      - input: SrcAddr
+        output: srcIP
+      - input: SrcPort
+        output: srcPort
+      - input: DstAddr
+        output: dstIP
+      - input: DstPort
+        output: dstPort
+      - input: Proto
+        output: proto
+      - input: Bytes
+        output: bytes
+      - input: TCPFlags
+        output: TCPFlags
+      - input: SrcAS
+        output: srcAS
+      - input: DstAS
+        output: dstAS
+    type: generic
+- name: transform_network
+  transform:
+    network:
+      rules:
+      - input: dstPort
+        output: service
+        type: add_service
+        parameters: proto
+      - input: dstIP
+        output: dstSubnet24
+        type: add_subnet
+        parameters: /24
+      - input: srcIP
+        output: srcSubnet24
+        type: add_subnet
+        parameters: /24
+      - input: srcIP
+        output: srcSubnet
+        type: add_subnet
+        parameters: /16
+      - input: '{{.srcIP}},{{.srcPort}},{{.dstIP}},{{.dstPort}},{{.proto}}'
+        output: isNewFlow
+        type: conn_tracking
+        parameters: "1"
+      - input: dstIP
+        output: dstSubnet
+        type: add_subnet
+        parameters: /16
+      - input: srcIP
+        output: srcK8S
+        type: add_kubernetes
+        parameters: srcK8S_labels
+      - input: bytes
+        output: all
+        type: add_if
+        parameters: '>=0'
+      - input: dstIP
+        output: dstLocation
+        type: add_location
+    type: network
+- extract:
+    aggregates:
+    - name: bandwidth_network_service
+      by:
+      - service
+      operation: sum
+      recordKey: bytes
+      topK: 0
+    - name: bandwidth_source_destination_subnet
+      by:
+      - dstSubnet24
+      - srcSubnet24
+      operation: sum
+      recordKey: bytes
+      topK: 0
+    - name: bandwidth_source_subnet
+      by:
+      - srcSubnet
+      operation: sum
+      recordKey: bytes
+      topK: 0
+    - name: dest_connection_subnet_count
+      by:
+      - dstSubnet
+      operation: sum
+      recordKey: isNewFlow
+      topK: 0
+    - name: src_connection_count
+      by:
+      - srcSubnet
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: TCPFlags_count
+      by:
+      - TCPFlags
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: dst_as_connection_count
+      by:
+      - dstAS
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: src_as_connection_count
+      by:
+      - srcAS
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: count_source_destination_subnet
+      by:
+      - dstSubnet24
+      - srcSubnet24
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: bandwidth_destination_subnet
+      by:
+      - dstSubnet
+      operation: sum
+      recordKey: bytes
+      topK: 0
+    - name: bandwidth_namespace
+      by:
+      - srcK8S_Namespace
+      - srcK8S_Type
+      operation: sum
+      recordKey: bytes
+      topK: 0
+    - name: flows_bytes_hist
+      by:
+      - all_Evaluate
+      operation: raw_values
+      recordKey: bytes
+      topK: 0
+    - name: dest_connection_location_count
+      by:
+      - dstLocation_CountryName
+      operation: count
+      recordKey: ""
+      topK: 0
+    - name: dest_service_count
+      by:
+      - service
+      operation: count
+      recordKey: ""
+      topK: 0
+    type: aggregates
+  name: extract_aggregate
+- encode:
+    prom:
+      metrics:
+      - name: bandwidth_per_network_service
+        type: counter
+        filter:
+          key: name
+          value: bandwidth_network_service
+        valueKey: recent_op_value
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: bandwidth_per_source_destination_subnet
+        type: counter
+        filter:
+          key: name
+          value: bandwidth_source_destination_subnet
+        valueKey: recent_op_value
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: bandwidth_per_source_subnet
+        type: counter
+        filter:
+          key: name
+          value: bandwidth_source_subnet
+        valueKey: recent_op_value
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: connections_per_destination_subnet
+        type: counter
+        filter:
+          key: name
+          value: dest_connection_subnet_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: connections_per_source_subnet
+        type: counter
+        filter:
+          key: name
+          value: src_connection_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: connections_per_tcp_flags
+        type: counter
+        filter:
+          key: name
+          value: TCPFlags_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: connections_per_destination_as
+        type: counter
+        filter:
+          key: name
+          value: dst_as_connection_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: connections_per_source_as
+        type: counter
+        filter:
+          key: name
+          value: src_as_connection_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: count_per_source_destination_subnet
+        type: counter
+        filter:
+          key: name
+          value: count_source_destination_subnet
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: egress_per_destination_subnet
+        type: counter
+        filter:
+          key: name
+          value: bandwidth_destination_subnet
+        valueKey: recent_op_value
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: egress_per_namespace
+        type: counter
+        filter:
+          key: name
+          value: bandwidth_namespace
+        valueKey: recent_op_value
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: flows_length_histogram
+        type: histogram
+        filter:
+          key: name
+          value: flows_bytes_hist
+        valueKey: recent_raw_values
+        labels:
+        - by
+        - aggregate
+        buckets:
+        - 128
+        - 2048
+        - 10240
+        - 102400
+        - 1.048576e+06
+      - name: connections_per_destination_location
+        type: counter
+        filter:
+          key: name
+          value: dest_connection_location_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      - name: service_count
+        type: counter
+        filter:
+          key: name
+          value: dest_service_count
+        valueKey: recent_count
+        labels:
+        - by
+        - aggregate
+        buckets: []
+      port: 9102
+      prefix: flp_
+    type: prom
+  name: encode_prom
+- name: write_loki
+  write:
+    loki:
+      url: http://loki.default.svc.cluster.local:3100
+      staticLabels:
+        job: flowlogs-pipeline
+    type: loki
+pipeline:
+- name: ingest_collector
+- follows: ingest_collector
+  name: transform_generic
+- follows: transform_generic
+  name: transform_network
+- follows: transform_network
+  name: extract_aggregate
+- follows: extract_aggregate
+  name: encode_prom
+- follows: transform_network
+  name: write_loki
+
