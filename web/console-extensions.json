@@ -1,0 +1,225 @@
+[
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "netflow-traffic-link",
+      "perspective": "admin",
+      "section": "observe",
+      "name": "%plugin_network-observability-plugin~Network Traffic%",
+      "href": "/netflow-traffic"
+    }
+  },
+  {
+    "type": "console.page/route",
+    "properties": {
+      "path": "/netflow-traffic",
+      "component": {
+        "$codeRef": "netflowParent.default"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "",
+        "kind": "Pod"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "",
+        "kind": "Service"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "",
+        "kind": "Namespace"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "apps",
+        "kind": "Deployment"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "apps",
+        "kind": "StatefulSet"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "apps",
+        "kind": "DaemonSet"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "apps",
+        "kind": "ReplicaSet"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "",
+        "kind": "Node"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "batch",
+        "kind": "CronJob"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "batch",
+        "kind": "Job"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v2beta2",
+        "group": "autoscaling",
+        "kind": "HorizontalPodAutoscaler"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "model": {
+        "version": "v1",
+        "group": "route.openshift.io",
+        "kind": "Route"
+      },
+      "component": {
+        "$codeRef": "netflowTab.default"
+      },
+      "page": {
+        "name": "%plugin_network-observability-plugin~Network Traffic%",
+        "href": "netflow"
+      }
+    }
+  }
+]

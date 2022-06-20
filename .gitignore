@@ -1,0 +1,11 @@
+.env
+.idea
+.vscode
+.DS_Store
+/web/dist
+/web/node_modules
+/web/yarn-error.log
+/plugin-backend
+/coverage.out
+tmp.Dockerfile
+/web/cypress/videos
