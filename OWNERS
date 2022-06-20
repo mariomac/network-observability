@@ -1,0 +1,11 @@
+approvers:
+  - mariomac
+  - jpinsonneau
+  - jotak
+  - OlivierCazade
+reviewers:
+  - mariomac
+  - jpinsonneau
+  - jotak
+  - OlivierCazade
+component: Network Observability
