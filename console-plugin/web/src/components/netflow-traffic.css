@@ -1,0 +1,104 @@
+.actions {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+/*hack to keep refresh button size while loading*/
+
+.co-action-refresh-button {
+    width: 45px !important;
+    height: 33px !important;
+}
+
+span.pf-c-button__icon.pf-m-start {
+    width: 14px;
+    display: flex;
+}
+
+/*rotate animation for loading icon*/
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/*allow new lines for error text*/
+
+.pf-c-empty-state__body {
+    white-space: pre-line;
+}
+
+#pageSection {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-bottom: 3em;
+}
+
+/* set max height to avoid huge table load if tab force scroll */ 
+#pageSection.tab {
+    max-height: 75vh;
+}
+
+#drawer {
+    z-index: 1;
+}
+
+#drawerContent {
+    overflow: hidden;
+}
+
+.pf-c-drawer__panel.pf-m-resizable {
+    overflow: hidden;
+}
+
+/* flex page header */
+#pageHeader {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.flex {
+    flex: 1;
+}
+
+/*force buttons to have the exact same display since they are different components*/
+#manage-columns-button,
+#display-dropdown,
+#export-button,
+#fullscreen-button,
+#more-options-button,
+.overflow-button {
+    color: #06c;
+    display: flex;
+    align-items: center;
+    margin-left: 0;
+    margin-right: 5px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/*hide some content for fullscreen mode*/
+.hidden {
+    display: none !important;
+}
+
+/*remove bullets from dropdown*/
+.pf-c-dropdown__group>ul {
+    list-style: none;
+    padding-left: 10px;
+}
+
+#netflow-warning {
+    position: absolute;
+    right: 2em;
+    bottom: 3em;
+    z-index: 999;
+}
